@@ -1,7 +1,11 @@
 #.GITIGNORE
+# MAIN FILES
 .venv/
 runs/
-*.pt
+secret.key
+weights/*.pt
+
+#PYTHON CACHE AND IDE FILES
 __pycache__/
 *.py[cod]
 *$py.class

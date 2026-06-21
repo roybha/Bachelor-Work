@@ -37,9 +37,7 @@ class AppBuilder:
     def _setup_dependencies(self):
         # Спочатку створюємо базові сервіси (робота з моделлю та зображеннями),
         # а потім передаємо їх у контролер
-        self.detector_service = YOLOInferenceService()
-        self.image_service = ImageProcessor()
-        self.detection_controller = DetectionController(self.detector_service, self.image_service)
+        self.detection_controller = DetectionController(YOLOInferenceService(), ImageProcessor())
 
     def _setup_routes(self):
         # Підключаємо маршрути з нашого контролера
