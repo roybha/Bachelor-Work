@@ -1,0 +1,195 @@
+/* main.css - Engineering Style */
+
+body {
+    font-family: Arial, Helvetica, sans-serif; /* Стандартний шрифт */
+    background-color: #fcfcfc;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1000px;
+    max-height: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ddd; /* Проста рамка навколо всього */
+    padding: 20px;
+}
+
+/* --- Заголовок --- */
+header {
+    border-bottom: 2px solid #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: #000;
+}
+
+.badge {
+    background: #333;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    vertical-align: text-top;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* --- Блок керування --- */
+.controls {
+    background-color: #f0f0f0; /* Легкий сірий фон для налаштувань */
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+#insert_form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* --- Елементи вводу --- */
+select, input[type="file"] {
+    padding: 5px;
+    border: 1px solid #999;
+    background: #fff;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+/* Виправляємо стрибання цифр, але простіше */
+.label-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mono-text {
+    font-family: 'Courier New', monospace; /* Щоб цифри були однакової ширини */
+    font-weight: bold;
+    background: #fff;
+    padding: 0 4px;
+    border: 1px solid #ccc;
+}
+
+/* --- Кнопки --- */
+button {
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 8px 16px;
+    border: 1px solid #666;
+    background-color: #e0e0e0;
+    transition: background 0.1s;
+}
+
+button:hover {
+    background-color: #d0d0d0;
+}
+
+#detectBtn {
+    background-color: #0056b3; /* "Інженерний" синій */
+    color: white;
+    border-color: #004494;
+    height: 38px; /* Підганяємо висоту під інпути */
+}
+
+#detectBtn:hover {
+    background-color: #004494;
+}
+
+/* --- Зона результату --- */
+.result {
+    width: 100%;
+    height: 500px; /* Лишаємо фіксовану висоту - це зручність, а не краса */
+    background-color: #222; /* Темний фон для контрасту фото */
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.placeholder {
+    color: #888;
+    font-family: monospace;
+}
+
+.result img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Ховаємо пусту картинку */
+img[src=""], img:not([src]) {
+    display: none;
+}
+
+/* Кнопка скачування - просто в кутку */
+#downloadLink {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+/* --- Статистика --- */
+.stats-bar {
+    display: flex;
+    gap: 20px;
+    font-family: monospace; /* Моноширинний шрифт для даних */
+    font-size: 1rem;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #fffae6; /* Легкий жовтий (як стікер) */
+    border: 1px solid #ddd;
+}
+
+.stat-value {
+    font-weight: bold;
+}
+
+/* --- Таблиця --- */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.styled-table th, .styled-table td {
+    border: 1px solid #999;
+    padding: 8px;
+    text-align: left;
+}
+
+.styled-table th {
+    background-color: #eee;
+}
