@@ -2,6 +2,8 @@ import os
 from app.services.detector_service import YOLOInferenceService
 from app.utils.image_processor import ImageProcessor
 from app.routers.detect import DetectionController
+from model_encryption.security import ModelSecurity
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -9,6 +11,7 @@ from fastapi.requests import Request
 
 
 class AppBuilder:
+    default_model = "yolo11n_ep150_img640_augY_v2_best.enc"
     """
         Використано паттерн програмування будівельник(Builder) для налаштування FastAPI додатку
         Уникаючи створення глобальних змінних та акуратно ініціалізувати всі сервіси
@@ -17,7 +20,8 @@ class AppBuilder:
         self.app = FastAPI(
             title="YOLO Detection OOP API",
             version="1.0.0",
-            description="Backend for YOLO inference"
+            description="Backend for YOLO inference",
+            lifespan=self.app_lifespan
         )
         # Використовуємо Jinja2 для рендеру базових HTML-сторінок
         self.templates = Jinja2Templates(directory="templates")
@@ -55,7 +59,19 @@ class AppBuilder:
             models_dir = "weights"
             if not os.path.exists(models_dir):
                 return []
-            return [file for file in os.listdir(models_dir) if file.endswith(".pt")]
+            return [file for file in os.listdir(models_dir) if file.endswith(".enc")]
+
+        @self.app.post("/switch_model")
+        async def switch_model(model_name: str):
+            if model_name == self.app.state.current_active_model:
+                return {"status": "success", "message":"Model is already active"}
+            result = ModelSecurity.load_encrypted_model(model_name)
+            if result is None:
+                return {"status": "error", "message":"Model not found"}
+            (self.detection_controller.
+             detector.load_model(result, model_name))
+            self.app.state.current_active_model = model_name
+            return {"status": "success", "active_model":f"{model_name}"}
 
     def _setup_statics(self):
         # Вказуємо статичні (css/js)
@@ -64,6 +80,14 @@ class AppBuilder:
     def get_app(self) -> FastAPI:
         return self.app
 
+    @asynccontextmanager
+    async def app_lifespan(self, app: FastAPI):
+        clean_model = ModelSecurity.load_encrypted_model(self.default_model)
+        (self.detection_controller.
+         detector.load_model(clean_model, self.default_model)
+         )
+        app.state.current_active_model = self.default_model # type: ignore
+        yield
 
 # Точка входу програми (Uvicorn)
 app = AppBuilder().get_app()

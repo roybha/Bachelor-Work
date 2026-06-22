@@ -27,21 +27,13 @@ class DetectionController:
         # із певним порогом впевненості
         async def detect_objects(
                 file: UploadFile = File(...),
-                model_name: str = Form(...),
                 confidence: float = Form(0.25)
         ):
             # Делегуємо основну логіку окремому методу
-            return await self.handle_detection(file, model_name, confidence)
+            return await self.handle_detection(file, confidence)
 
-    async def handle_detection(self, file: UploadFile, model_name: str, confidence: float) -> DetectionResponse:
-        weights_path = os.path.join("weights", model_name)
-
-        # Перевіряємо чи існує файл з вагами моделі
-        if not os.path.exists(weights_path):
-            raise HTTPException(status_code=404, detail=f"Model '{model_name}' not found")
-
-        # 1. Завантаження ваг моделі
-        self.detector.load_model(weights_path)
+    async def handle_detection(self, file: UploadFile, confidence: float) -> DetectionResponse:
+        # 1. Отримуємо потрібну модель через lifespan-механізм
 
         # 2. Зчитуємо байти і декодувємо зображення у формат Image
         image_bytes = await file.read()

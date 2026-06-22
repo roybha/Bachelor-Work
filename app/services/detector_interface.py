@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from PIL.Image import Image
 from typing import List, Dict, Any
+import io
 
 class IDetector(ABC):
     """
@@ -8,7 +9,7 @@ class IDetector(ABC):
         не довелося переписувати весь контролер.
     """
     @abstractmethod
-    def load_model(self, weights_path: str):
+    def load_model(self,model_bytes: io.BytesIO, model_name: str):
         """Завантажуємо ваги вказаної моделі"""
         pass
 
